@@ -8,6 +8,8 @@ import multer from "multer";
 import session from "express-session";
 import MongoStore from "connect-mongo";
 import "./database.js";
+import passport from "passport";
+import initializePassport from "./config/passport.config.js";
 
 const app = express();
 const PUERTO = 8080;
@@ -22,10 +24,13 @@ app.use(session({
     resave: true,
     saveUninitialized: true,
     store: MongoStore.create({
-        mongoUrl:"mongodb+srv://calasalde:desafio@cluster0.obskgp2.mongodb.net/ecommerce?retryWrites=true&w=majority&appName=Cluster0", ttl: 500
+        mongoUrl:"mongodb+srv://calasalde:desafio@cluster0.obskgp2.mongodb.net/ecommerce?retryWrites=true&w=majority&appName=Cluster0", ttl: 1000
     })
 }));
 
+initializePassport();
+app.use(passport.initialize());
+app.use(passport.session());
 
 //Handlebars Config
 app.engine("handlebars", exphbs.engine());
